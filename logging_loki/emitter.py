@@ -4,7 +4,6 @@ import abc
 import copy
 import functools
 import logging
-import time
 from logging.config import ConvertingDict
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -26,7 +25,7 @@ class LokiEmitter(abc.ABC):
     label_replace_with = const.label_replace_with
     session_class = requests.Session
 
-    def __init__(self, url: str, tags: dict | None = None, auth: BasicAuth = None, headers: dict | None = None, verify_ssl: bool = True):
+    def __init__(self, url: str, tags: Optional[dict] = None, auth: BasicAuth = None, headers: Optional[dict] = None, verify_ssl: bool = True):
         """
         Create new Loki emitter.
 
@@ -47,7 +46,7 @@ class LokiEmitter(abc.ABC):
         #: Verify the host's ssl certificate
         self.verify_ssl = verify_ssl
 
-        self._session: requests.Session | None = None
+        self._session: Optional[requests.Session] = None
 
     def __call__(self, record: logging.LogRecord, line: str):
         """Send log record to Loki."""
@@ -149,7 +148,7 @@ class LokiEmitterV2(LokiEmitterV1):
     Enables passing additional headers to requests
     """
 
-    def __init__(self, url: str, tags: dict | None = None, auth: BasicAuth = None, headers: dict = None, verify_ssl: bool = True):
+    def __init__(self, url: str, tags: Optional[dict] = None, auth: BasicAuth = None, headers: Optional[dict] = None, verify_ssl: bool = True):
         super().__init__(url, tags, auth, headers, verify_ssl)
 
     def __call__(self, record: logging.LogRecord, line: str):
