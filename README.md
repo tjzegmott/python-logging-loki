@@ -3,7 +3,7 @@
 > Modern Python logging handler for Grafana Loki
 
 [![PyPI version](https://img.shields.io/pypi/v/python-logging-loki-v2.svg)](https://pypi.org/project/python-logging-loki-v2/)
-[![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/python-3.8.1+-blue.svg)](https://www.python.org/)
 
 ## Documented by Grafana: https://github.com/grafana/loki/pull/16397
 

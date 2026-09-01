@@ -5,6 +5,9 @@ build-backend = "setuptools.build_meta"
 
 [tool.ruff]
 line-length = 200
+# Lowest supported interpreter; keeps pyupgrade rules from
+# rewriting code into 3.9+ only syntax.
+target-version = "py38"
 
 [tool.ruff.lint]
 # Enable flake8-style rules and more

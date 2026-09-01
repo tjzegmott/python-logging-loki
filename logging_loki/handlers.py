@@ -4,7 +4,7 @@ import logging
 import warnings
 from logging.handlers import QueueHandler, QueueListener
 from queue import Queue
-from typing import Dict, Type
+from typing import Dict, Optional, Type
 
 from logging_loki import const, emitter
 
@@ -29,7 +29,7 @@ class LokiHandler(logging.Handler):
 
     emitters: Dict[str, Type[emitter.LokiEmitter]] = {"0": emitter.LokiEmitterV0, "1": emitter.LokiEmitterV1, "2": emitter.LokiEmitterV2}
 
-    def __init__(self, url: str, tags: dict | None = None, auth: emitter.BasicAuth | None = None, version: str | None = None, headers: dict | None = None, verify_ssl: bool = True):
+    def __init__(self, url: str, tags: Optional[dict] = None, auth: Optional[emitter.BasicAuth] = None, version: Optional[str] = None, headers: Optional[dict] = None, verify_ssl: bool = True):
         """
         Create new Loki logging handler.
 
