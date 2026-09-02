@@ -1,0 +1,22 @@
+{
+  "include-component-in-tag": false,
+  "tag-separator": "@",
+  "release-type": "python",
+  "separate-pull-requests": true,
+  "packages": {
+    ".": {
+      "package-name": "logging_loki",
+      "component": "Core",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "src/logging_loki/__init__.py"
+        },
+        {
+          "type": "generic",
+          "path": "docker-compose.yml"
+        }
+      ]
+    }
+  }
+}
