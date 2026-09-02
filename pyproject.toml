@@ -1,42 +1,356 @@
 [build-system]
-requires = ["setuptools >= 40.0.0"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
+[project]
+name = "tjzegmott-python-logging-loki"
+version = "0.0.0"
+description = "Python logging handler for Grafana Loki"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+authors = [{ name = "Tarik Zegmott", email = "tzegmott@gmail.com" }]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: System :: Logging",
+  "Topic :: Internet :: WWW/HTTP",
+  "Typing :: Typed",
+]
+keywords = []
+dependencies = ["requests>=2.32.4", "rfc3339>=6.1"]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.0.0",
+  "pytest-cov>=5.0.0",
+  "ruff>=0.14.14",
+  "ty>=0.0.14",
+  "hatch>=1.0.0",
+  "prek>=0.1.0",
+  "pysentry-rs>=0.1.0",
+  "freezegun>=1.5.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/tjzegmott/python-logging-loki"
+Documentation = "https://tjzegmott.github.io/python-logging-loki"
+Repository = "https://github.com/tjzegmott/python-logging-loki"
+Issues = "https://github.com/tjzegmott/python-logging-loki/issues"
+Changelog = "https://github.com/tjzegmott/python-logging-loki/blob/main/CHANGELOG.md"
+
+# =============================================================================
+# Hatch
+# =============================================================================
+
+[tool.hatch.build.targets.sdist]
+include = ["/src"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/logging_loki"]
+
+# Matrix testing across Python versions
+[tool.hatch.envs.hatch-test]
+dependency-groups = ["dev"]
+# Hatch's built-in test deps pin coverage~=7.11 / pytest~=9.0, which require
+# Python >=3.10. Re-pin them so the 3.8/3.9 matrix legs can resolve.
+dependencies = [
+  "coverage-enable-subprocess==1.0",
+  "coverage[toml]~=7.6; python_version < '3.10'",
+  "coverage[toml]~=7.11; python_version >= '3.10'",
+  "pytest~=8.3; python_version < '3.10'",
+  "pytest~=9.0; python_version >= '3.10'",
+  "pytest-mock~=3.12",
+  "pytest-randomly~=3.15",
+  "pytest-rerunfailures~=14.0",
+  "pytest-xdist[psutil]~=3.5",
+]
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+
+# =============================================================================
+# Ruff
+# =============================================================================
 
 [tool.ruff]
-line-length = 200
-# Lowest supported interpreter; keeps pyupgrade rules from
-# rewriting code into 3.9+ only syntax.
 target-version = "py38"
+line-length = 200
+src = ["src", "tests"]
 
 [tool.ruff.lint]
-# Enable flake8-style rules and more
-# You can customize this based on wemake-python-styleguide rules you want
 select = [
-    "E",    # pycodestyle errors
-    "W",    # pycodestyle warnings
-    "F",    # pyflakes
-    "I",    # isort
-    "N",    # pep8-naming
-    "UP",   # pyupgrade
-    "B",    # flake8-bugbear
-    "C4",   # flake8-comprehensions
-    "SIM",  # flake8-simplify
+  "E",   # pycodestyle errors
+  "W",   # pycodestyle warnings
+  "F",   # Pyflakes
+  "I",   # isort
+  "B",   # flake8-bugbear
+  "C4",  # flake8-comprehensions
+  "UP",  # pyupgrade
+  "ARG", # flake8-unused-arguments
+  "SIM", # flake8-simplify
+  "TCH", # flake8-type-checking
+  "PTH", # flake8-use-pathlib
+  "ERA", # eradicate
+  "RUF", # Ruff-specific rules
+
+  "E",     # pycodestyle errors
+  "W",     # pycodestyle warnings
+  "F",     # pyflakes
+  "I",     # isort
+  "N",     # pep8-naming
+  "D",     # pydocstyle
+  "UP",    # pyupgrade
+  "YTT",   # flake8-2020
+  "ANN",   # flake8-annotations
+  "ASYNC", # flake8-async
+  "S",     # flake8-bandit
+  "BLE",   # flake8-blind-except
+  "FBT",   # flake8-boolean-trap
+  "B",     # flake8-bugbear
+  "A",     # flake8-builtins
+  "COM",   # flake8-commas
+  "C4",    # flake8-comprehensions
+  "DTZ",   # flake8-datetimez
+  "T10",   # flake8-debugger
+  "DJ",    # flake8-django
+  "EM",    # flake8-errmsg
+  "EXE",   # flake8-executable
+  "FA",    # flake8-future-annotations
+  "ISC",   # flake8-implicit-str-concat
+  "ICN",   # flake8-import-conventions
+  "G",     # flake8-logging-format
+  "INP",   # flake8-no-pep420
+  "PIE",   # flake8-pie
+  "T20",   # flake8-print
+  "PYI",   # flake8-pyi
+  "PT",    # flake8-pytest-style
+  "Q",     # flake8-quotes
+  "RSE",   # flake8-raise
+  "RET",   # flake8-return
+  "SLF",   # flake8-self
+  "SLOT",  # flake8-slots
+  "SIM",   # flake8-simplify
+  "TID",   # flake8-tidy-imports
+  "TCH",   # flake8-type-checking
+  "INT",   # flake8-gettext
+  "ARG",   # flake8-unused-arguments
+  "PTH",   # flake8-use-pathlib
+  "ERA",   # eradicate
+  "PD",    # pandas-vet
+  "PGH",   # pygrep-hooks
+  "PL",    # pylint
+  "TRY",   # tryceratops
+  "FLY",   # flynt
+  "NPY",   # numpy
+  "AIR",   # airflow
+  "PERF",  # perflint
+  "FURB",  # refurb
+  "LOG",   # flake8-logging
+  "RUF",   # ruff-specific rules
 ]
 
-# Ignore specific rules if needed
 ignore = [
-    "UP009",  # UTF-8 encoding declaration is unnecessary
-    "UP035",  # typing.X is deprecated, use x instead
-    "UP006",  # Use x instead of X for type annotation
-    "UP030",  # Use implicit references for positional format fields
-    "UP032",  # Use f-string instead of format call
-    "UP015",  # Unnecessary mode argument
-    "UP045",  # New union syntax
-    "B019",   # Use of functools.lru_cache on methods can lead to memory leaks
-    "B028",   # No explicit stacklevel keyword argument found
+  "ANN401",  # Dynamically typed expressions (Any) are disallowed
+  "D100",    # Missing docstring in public module
+  "D104",    # Missing docstring in public package
+  "D107",    # Missing docstring in `__init__`
+  "D203",    # 1 blank line required before class docstring
+  "D213",    # Multi-line docstring summary should start at the second line
+  "FBT001",  # Boolean-typed positional argument in function definition
+  "FBT002",  # Boolean default positional argument in function definition
+  "PLR0913", # Too many arguments in function definition
+  "PLR2004", # Magic value used in comparison
+  "S101",    # Use of assert detected (allow in tests)
+  "TRY003",  # Avoid specifying long messages outside the exception class
+  "COM812",  # missing-trailing-comma
+  "PERF203", # try-except inside loop
+
+  # Codebase supports Python 3.8; PEP 563/585/604 style is not adopted.
+  "FA100",   # Missing `from __future__ import annotations`
+  "FA102",   # PEP 604/585 syntax without future import
+  "UP009",   # UTF-8 encoding declaration is unnecessary
+  "UP030",   # Use implicit references for positional format fields
+  "UP032",   # Use f-string instead of `format` call
+  # Docstring / annotation conventions not applied to this codebase.
+  "D205",    # 1 blank line required between summary line and description
+  "D212",    # Multi-line docstring summary should start at the first line
+  "D415",    # First line should end with a period
+  "D417",    # Missing argument description in the docstring
+  "ANN001",  # Missing type annotation for function argument
+  "ANN003",  # Missing type annotation for `**kwargs`
+  "ANN201",  # Missing return type annotation for public function
+  "ANN204",  # Missing return type annotation for special method
+  # Existing patterns kept deliberately.
+  "EM103",   # Exception must not use a `.format()` string directly
+  "B019",    # `lru_cache` on a method
+  "B028",    # No explicit `stacklevel` in `warnings.warn`
+  "BLE001",  # Do not catch blind exception
+  "FLY002",  # Consider f-string instead of string join
+  "RUF012",  # Mutable class attributes should be `ClassVar`
 ]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = [
+  "F401", # Unused imports
+  "F403", # Undefined local with import star
+  "F405", # Undefined local with import star usage
+]
+"tests/**/*.py" = [
+  "S101",    # Use of assert detected
+  "ANN",     # Type annotations
+  "D103",    # Missing docstring in public function
+  "PLR2004", # Magic value used in comparison
+  "S105",    # Possible hardcoded password
+  "S106",    # Possible hardcoded password
+  "S108",    # Probable insecure usage of temporary file/directory
+  "ARG001",  # Unused function argument (pytest fixtures)
+  "INP001",  # Implicit namespace package
+  "LOG001",  # Use `logging.getLogger()` to instantiate loggers
+  "PLC0415", # `import` should be at top-level of a file
+  "PT001",   # Use `@pytest.fixture` over `@pytest.fixture()`
+  "PT006",   # Wrong type passed to first argument of `parametrize`
+  "PT007",   # Wrong values type in `parametrize`
+  "PT011",   # `pytest.raises(ValueError)` is too broad
+  "PT012",   # `pytest.raises()` block should contain a single statement
+  "PT018",   # Assertion should be broken down into multiple parts
+  "PTH118",  # `os.path.join()` should be replaced by `Path`
+  "RET504",  # Unnecessary assignment before `return`
+  "SLF001",  # Private member accessed
+  "T201",    # `print` found
+]
+"docs/**/*.py" = [
+  "INP001", # Implicit namespace package
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["logging_loki"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.pylint]
+max-args = 8
 
 [tool.ruff.format]
-# Use double quotes (ruff default, similar to black)
+# README code blocks are hand-wrapped for docs readability.
+exclude = ["README.md"]
 quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
+
+# =============================================================================
+# ty (Astral type checker)
+# =============================================================================
+
+[tool.ty.src]
+include = ["src"]
+
+[tool.ty.rules]
+# `logging.config.ConvertingDict` widens the inferred return type of `build_tags`.
+invalid-return-type = "ignore"
+
+# =============================================================================
+# Pytest
+# =============================================================================
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = ["-ra", "-q", "--strict-markers", "--strict-config"]
+markers = [
+  "integration: marks tests as integration tests (deselect with '-m \"not integration\"')",
+  "unit: marks tests as unit tests",
+  "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+  "order: marks tests that need to run in a specific order (will run sequentially)",
+]
+
+# =============================================================================
+# Coverage
+# =============================================================================
+
+[tool.coverage.run]
+source = ["src/logging_loki"]
+branch = true
+parallel = true
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "def __repr__",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "@abstractmethod",
+]
+show_missing = true
+skip_covered = false
+precision = 2
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+# =============================================================================
+# git-cliff (Changelog generation)
+# =============================================================================
+
+[tool.git-cliff]
+config = "cliff.toml"
+
+# =============================================================================
+# Bandit (Security linter)
+# =============================================================================
+
+[tool.bandit]
+exclude_dirs = ["tests", "venv", ".venv"]
+skips = ["B101", "B601"]                  # Skip assert_used and shell_injection_process_function
+
+# =============================================================================
+# Vulture (Dead code detection)
+# =============================================================================
+
+[tool.vulture]
+min_confidence = 80
+paths = ["src", "tests"]
+exclude = ["venv/", ".venv/"]
+
+# =============================================================================
+# Interrogate (Docstring coverage checker)
+# =============================================================================
+
+[tool.interrogate]
+ignore-init-method = true
+ignore-init-module = false
+ignore-magic = false
+ignore-semiprivate = false
+ignore-private = false
+ignore-property-decorators = false
+ignore-module = false
+ignore-nested-functions = false
+ignore-nested-classes = true
+ignore-setters = false
+fail-under = 80
+exclude = ["setup.py", "docs", "build"]
+ignore-regex = ["^get$", "^mock_.*", ".*BaseClass.*"]
+verbose = 3
+quiet = false
+whitelist-regex = []
+color = true

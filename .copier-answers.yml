@@ -1,0 +1,21 @@
+# Changes here will be overwritten by Copier
+_commit: bb8e479
+_src_path: gh:tjzegmott/python-copier-template
+author_email: tzegmott@gmail.com
+author_name: Tarik Zegmott
+github_username: tjzegmott
+include_cli: false
+include_codecov: true
+include_docker: false
+include_docs: false
+include_github_actions: true
+include_prek: true
+include_pypi_publish: true
+include_security_scanning: true
+license: MIT
+project_description: Python logging handler for Grafana Loki
+project_name: tjzegmott-python-logging-loki
+project_slug: logging_loki
+python_version: '3.10'
+python_versions_matrix: 3.8,3.9,3.10,3.11,3.12,3.13,3.14
+repository_name: python-logging-loki

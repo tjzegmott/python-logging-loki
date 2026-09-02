@@ -1,0 +1,12 @@
+
+# Documentation workflow disabled (include_docs is false)
+name: Documentation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Documentation is disabled"

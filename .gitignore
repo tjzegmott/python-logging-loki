@@ -20,12 +20,12 @@ parts/
 sdist/
 var/
 wheels/
-pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
+**/_version.py
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -46,7 +46,9 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+cov.xml
 *.cover
+*.py,cover
 .hypothesis/
 .pytest_cache/
 
@@ -58,6 +60,7 @@ coverage.xml
 *.log
 local_settings.py
 db.sqlite3
+db.sqlite3-journal
 
 # Flask stuff:
 instance/
@@ -68,8 +71,10 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docs/_api
 
 # PyBuilder
+.pybuilder/
 target/
 
 # Jupyter Notebook
@@ -82,8 +87,15 @@ ipython_config.py
 # pyenv
 .python-version
 
-# celery beat schedule file
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
 celerybeat-schedule
+celerybeat.pid
 
 # SageMath parsed files
 *.sage.py
@@ -115,8 +127,24 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# JetBrains IDE
-.idea
+# ruff
+.ruff_cache/
 
-# MacOS
+# ty
+.ty_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Project specific
+*.log
+.env.*
+!.env.example
