@@ -1,8 +1,8 @@
-# 🚀 python-logging-loki-v2
+# 🚀 tjzegmott-python-logging-loki
 
 > Modern Python logging handler for Grafana Loki
 
-[![PyPI version](https://img.shields.io/pypi/v/python-logging-loki-v2.svg)](https://pypi.org/project/python-logging-loki-v2/)
+[![PyPI version](https://img.shields.io/pypi/v/tjzegmott-python-logging-loki.svg)](https://pypi.org/project/tjzegmott-python-logging-loki/)
 [![Python](https://img.shields.io/badge/python-3.8.1+-blue.svg)](https://www.python.org/)
 
 ## Documented by Grafana: https://github.com/grafana/loki/pull/16397
@@ -25,7 +25,7 @@ Send Python logs directly to [Grafana Loki](https://grafana.com/loki) with minim
 ## 📦 Installation
 
 ```bash
-pip install python-logging-loki-v2
+pip install tjzegmott-python-logging-loki
 ```
 
 ---
@@ -75,20 +75,21 @@ logger.info("Non-blocking log message")
 
 ## ⚙️ Configuration Options
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `url` | `str` | *required* | Loki push endpoint URL |
-| `tags` | `dict` | `{}` | Default labels for all logs |
-| `auth` | `tuple` | `None` | Basic auth credentials `(username, password)` |
-| `headers` | `dict` | `None` | Custom HTTP headers (e.g., for multi-tenancy) |
-| `version` | `str` | `"1"` | Loki API version (`"0"`, `"1"`, or `"2"`) |
-| `verify_ssl` | `bool` | `True` | Enable/disable SSL certificate verification |
+| Parameter    | Type    | Default    | Description                                   |
+| ------------ | ------- | ---------- | --------------------------------------------- |
+| `url`        | `str`   | _required_ | Loki push endpoint URL                        |
+| `tags`       | `dict`  | `{}`       | Default labels for all logs                   |
+| `auth`       | `tuple` | `None`     | Basic auth credentials `(username, password)` |
+| `headers`    | `dict`  | `None`     | Custom HTTP headers (e.g., for multi-tenancy) |
+| `version`    | `str`   | `"1"`      | Loki API version (`"0"`, `"1"`, or `"2"`)     |
+| `verify_ssl` | `bool`  | `True`     | Enable/disable SSL certificate verification   |
 
 ---
 
 ## 🏷️ Labels
 
 Logs are automatically labeled with:
+
 - **severity** - Log level (INFO, ERROR, etc.)
 - **logger** - Logger name
 - **Custom tags** - From handler and `extra={"tags": {...}}`
@@ -113,6 +114,7 @@ handler = logging_loki.LokiHandler(
 ```
 
 ---
+
 Based on [python-logging-loki](https://github.com/GreyZmeem/python-logging-loki) by GreyZmeem.
 
 ### Contributing
