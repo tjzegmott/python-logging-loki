@@ -5,8 +5,6 @@
 [![PyPI version](https://img.shields.io/pypi/v/tjzegmott-python-logging-loki.svg)](https://pypi.org/project/tjzegmott-python-logging-loki/)
 [![Python](https://img.shields.io/badge/python-3.8.1+-blue.svg)](https://www.python.org/)
 
-## Documented by Grafana: https://github.com/grafana/loki/pull/16397
-
 Send Python logs directly to [Grafana Loki](https://grafana.com/loki) with minimal configuration.
 
 ---
