@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "logging_loki"
-version = "0.0.0"
+version = "0.1.0"
 description = "Python logging handler for Grafana Loki"
 readme = "README.md"
 license = "MIT"
