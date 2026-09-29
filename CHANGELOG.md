@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `suppress_errors` option on `LokiHandler`/`LokiQueueHandler` to silently swallow
+  delivery failures (e.g. connection errors or non-2xx Loki responses) instead of
+  printing the standard logging `--- Logging error ---` traceback to stderr.
 - Initial project structure
 - Basic package setup with logging_loki
 - GitHub Actions CI/CD pipelines

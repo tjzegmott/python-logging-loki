@@ -29,7 +29,16 @@ class LokiHandler(logging.Handler):
 
     emitters: Dict[str, Type[emitter.LokiEmitter]] = {"0": emitter.LokiEmitterV0, "1": emitter.LokiEmitterV1, "2": emitter.LokiEmitterV2}
 
-    def __init__(self, url: str, tags: Optional[dict] = None, auth: Optional[emitter.BasicAuth] = None, version: Optional[str] = None, headers: Optional[dict] = None, verify_ssl: bool = True):
+    def __init__(
+        self,
+        url: str,
+        tags: Optional[dict] = None,
+        auth: Optional[emitter.BasicAuth] = None,
+        version: Optional[str] = None,
+        headers: Optional[dict] = None,
+        verify_ssl: bool = True,
+        suppress_errors: bool = False,
+    ):
         """
         Create new Loki logging handler.
 
@@ -39,9 +48,15 @@ class LokiHandler(logging.Handler):
             auth: Optional tuple with username and password for basic HTTP authentication.
             version: Version of Loki emitter to use.
             verify_ssl: If set to False, the endpoint's SSL certificates are not verified
+            suppress_errors: If set to True, delivery failures (e.g. connection errors or
+                unexpected Loki response status codes) are silently swallowed instead of
+                being reported through the standard logging "--- Logging error ---" traceback
+                dump on stderr. The emitter's HTTP session is still closed/reset so the next
+                attempt starts fresh.
 
         """
         super().__init__()
+        self.suppress_errors = suppress_errors
 
         if version is None and const.emitter_ver == "0":
             msg = (
@@ -60,6 +75,8 @@ class LokiHandler(logging.Handler):
     def handleError(self, record):  # noqa: N802
         """Close emitter and let default handler take actions on error."""
         self.emitter.close()
+        if self.suppress_errors:
+            return
         super().handleError(record)
 
     def emit(self, record: logging.LogRecord):

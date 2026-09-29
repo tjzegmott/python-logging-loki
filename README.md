@@ -98,6 +98,36 @@ logger.info("Non-blocking log message")
 | `headers`    | `dict`  | `None`     | Custom HTTP headers (e.g., for multi-tenancy) |
 | `version`    | `str`   | `"1"`      | Loki API version (`"0"`, `"1"`, or `"2"`)     |
 | `verify_ssl` | `bool`  | `True`     | Enable/disable SSL certificate verification   |
+| `suppress_errors` | `bool` | `False` | Silently swallow delivery failures instead of printing the standard logging `--- Logging error ---` traceback |
+
+---
+
+## 🚨 Error Handling
+
+By default, if a log record can't be delivered to Loki (network failure, TLS error,
+or an unexpected HTTP status code such as `405 Method Not Allowed`), Python's standard
+logging machinery prints a `--- Logging error ---` traceback to stderr for every failed
+record (see [`logging.Handler.handleError`](https://docs.python.org/3/library/logging.html#logging.Handler.handleError)).
+
+A `405` typically means the request never reached Loki's push endpoint as a `POST` -
+check for things like an `http://` → `https://` redirect, a reverse proxy/ingress that
+only allows `GET` on that path, or a URL that doesn't end in `/loki/api/v1/push`. Test
+with `curl -X POST <url>` to confirm the endpoint accepts `POST` requests directly.
+
+If you'd rather not have delivery failures spam your application logs while you
+investigate (or you're fine losing occasional log lines), set `suppress_errors=True`:
+
+```python
+handler = logging_loki.LokiHandler(
+    url="https://loki.example.com/loki/api/v1/push",
+    tags={"app": "my-application"},
+    version="2",
+    suppress_errors=True,
+)
+```
+
+The handler still closes/resets its HTTP session on failure so subsequent attempts
+start clean; it just skips the noisy stderr traceback.
 
 ---
 
