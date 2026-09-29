@@ -1,0 +1,43 @@
+# pysentry configuration
+#
+# This project supports Python >=3.8 (see `requires-python` in pyproject.toml
+# and the CI test matrix in .github/workflows/continuous-integration.yml).
+# uv's universal resolver therefore has to keep dependency versions that are
+# still installable on Python 3.8, and for a handful of packages the newest
+# release supporting Python 3.8 predates the fix for these advisories:
+#
+#   - PYSEC-2026-1845 (pytest):  fix requires pytest>=9.0.3, which needs
+#     Python >=3.10. pytest 8.3.5 is the last release supporting Python 3.8,
+#     and Python 3.8 is exercised directly in CI (`make test-cov`), so it
+#     cannot be dropped without also dropping Python 3.8 test coverage.
+#   - PYSEC-2026-2275 (requests): fix requires requests>=2.33.0, which needs
+#     Python >=3.10. requests is a direct runtime dependency and the fixed
+#     issue (`requests.utils.extract_zipped_paths()` temp-file handling) is
+#     not used anywhere in this codebase.
+#   - PYSEC-2026-141 / 1994 / 1996 / 1997 / 1998 / 1999 (urllib3): pulled in
+#     transitively through `requests`; full remediation requires urllib3
+#     >=2.7.0, which needs Python >=3.10.
+#
+# All of the above require raising `requires-python` to >=3.10 (dropping
+# Python 3.8/3.9 support), which is a separate, deliberate decision rather
+# than a routine dependency bump. Re-run `make pysentry` after any such bump
+# and remove the corresponding IDs below once they're actually resolved by a
+# lockfile upgrade.
+#
+# Everything else pysentry can flag (anyio, click, cryptography,
+# jaraco-context, filelock, pygments -- all pulled in transitively through
+# `hatch`) is fixed by requiring `hatch` only on Python >=3.10 in
+# `pyproject.toml`, since `hatch` is a local-only dev tool never installed
+# in CI.
+
+[ignore]
+ids = [
+  "PYSEC-2026-1845", # pytest - fix needs Python >=3.10, see comment above
+  "PYSEC-2026-2275", # requests - fix needs Python >=3.10, see comment above
+  "PYSEC-2026-141",  # urllib3 (via requests) - fix needs Python >=3.10
+  "PYSEC-2026-1994", # urllib3 (via requests) - fix needs Python >=3.10
+  "PYSEC-2026-1996", # urllib3 (via requests) - fix needs Python >=3.10
+  "PYSEC-2026-1997", # urllib3 (via requests) - fix needs Python >=3.10
+  "PYSEC-2026-1998", # urllib3 (via requests) - fix needs Python >=3.10
+  "PYSEC-2026-1999", # urllib3 (via requests) - fix needs Python >=3.10
+]

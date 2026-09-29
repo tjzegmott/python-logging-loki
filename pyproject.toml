@@ -37,7 +37,7 @@ dev = [
   "pytest-cov>=5.0.0",
   "ruff>=0.14.14",
   "ty>=0.0.14",
-  "hatch>=1.0.0",
+  "hatch>=1.0.0; python_version >= '3.10'",
   "prek>=0.1.0",
   "pysentry-rs>=0.1.0",
   "freezegun>=1.5.5",
